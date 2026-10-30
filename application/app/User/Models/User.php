@@ -2,6 +2,7 @@
 
 namespace App\User\Models;
 
+use App\User\Enums\UserRole;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -26,5 +27,10 @@ class User extends Authenticatable
         return Attribute::make(
             set: fn (string $value) => Hash::make($value),
         );
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::Admin->value;
     }
 }
