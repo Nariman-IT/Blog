@@ -1,0 +1,25 @@
+FROM php:8.4-fpm-alpine
+
+RUN apk add --no-cache \
+    bash \
+    git \
+    icu-dev \
+    libpq-dev \
+    libzip-dev \
+    oniguruma-dev \
+    tzdata \
+    curl \
+    zip \
+    unzip \
+    autoconf
+
+WORKDIR /var/www
+
+COPY --from=mlocati/php-extension-installer:2.7.1 /usr/bin/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions \
+    && install-php-extensions \
+        intl \
+        opcache \
+        pdo_pgsql \
+        zip \
+        redis
