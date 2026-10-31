@@ -2,7 +2,9 @@
 
 namespace App\User\Models;
 
+use App\Post\Models\Post;
 use App\User\Enums\UserRole;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -32,5 +34,15 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === UserRole::Admin->value;
+    }
+
+    public function isAuthor(): bool
+    {
+        return $this->role === UserRole::Author->value;
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 }
