@@ -1,13 +1,15 @@
 services:
 
   php:
-    build: ./infrastructure/dev/php
+    build:
+      context: ./
+      dockerfile: infrastructure/dev/php/Dockerfile
     image: blog-php:dev
     container_name: blog_php
     ports:
       - "9000:9000"
-    volumes:
-      - ./application:/var/www/application
+    # volumes:
+    #   - ./application:/var/www/application
     networks:
       - blog-networks
 

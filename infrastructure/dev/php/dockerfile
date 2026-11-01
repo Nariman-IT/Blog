@@ -1,25 +1,32 @@
+FROM composer:2 AS vendor
+
+WORKDIR /app
+
+COPY application/composer.json application/composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --no-scripts \
+    --prefer-dist \
+    --optimize-autoloader
+
 FROM php:8.4-fpm-alpine
 
 RUN apk add --no-cache \
-    bash \
-    git \
-    icu-dev \
-    libpq-dev \
-    libzip-dev \
-    oniguruma-dev \
-    tzdata \
-    curl \
-    zip \
-    unzip \
-    autoconf
-
-WORKDIR /var/www
+    bash git icu-dev libpq-dev libzip-dev \
+    oniguruma-dev tzdata curl zip unzip autoconf
 
 COPY --from=mlocati/php-extension-installer:2.7.1 /usr/bin/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions \
-    && install-php-extensions \
-        intl \
-        opcache \
-        pdo_pgsql \
-        zip \
-        redis
+    && install-php-extensions intl opcache pdo_pgsql zip redis
+
+WORKDIR /var/www/application
+
+COPY --from=vendor /app/vendor ./vendor
+
+COPY application/ .
+
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
