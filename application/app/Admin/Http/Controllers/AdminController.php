@@ -2,12 +2,17 @@
 
 namespace App\Admin\Http\Controllers;
 
+use App\Admin\DTO\CategoryDto;
 use App\Admin\DTO\RoleDto;
 use App\Admin\DTO\SearchDto;
 use App\Admin\DTO\StatusDto;
+use App\Admin\Http\Requests\CategoryRequest;
 use App\Admin\Http\Requests\RoleRequest;
 use App\Admin\Http\Requests\SearchRequest;
 use App\Admin\Http\Requests\StatusRequest;
+use App\Admin\Resources\AdministratorsPersonalAccountCollection;
+use App\Admin\Resources\AuthorsCollection;
+use App\Admin\Resources\CategoryResource;
 use App\Admin\Resources\SearchCollection;
 use App\Admin\Resources\UserCollection;
 use App\Admin\Services\AdminService;
@@ -24,7 +29,7 @@ class AdminController
         $users = $service->getUsers($role);
 
         return response()->json([
-            'users' => new UserCollection($users),
+            'users' => new AdministratorsPersonalAccountCollection($users),
         ], Response::HTTP_OK);
     }
 
@@ -65,5 +70,43 @@ class AdminController
         return response()->json([
             'users' => new SearchCollection($user),
         ], Response::HTTP_OK); 
+    }
+
+    public function authors(AdminService $service): JsonResponse
+    {
+        $authors = $service->getAuthors();
+
+        return response()->json([
+            'authors' => new AuthorsCollection($authors),
+        ], Response::HTTP_OK);
+    }
+
+    public function create(CategoryRequest $request, AdminService $service): JsonResponse
+    {
+        $dto = new CategoryDto(...$request->validated());
+        $category = $service->createCategory($dto);
+
+        return response()->json([
+            'category' => new CategoryResource($category),
+        ], Response::HTTP_CREATED);
+    }
+
+    public function update(CategoryRequest $request, int $id, AdminService $service): JsonResponse
+    {
+        $dto = new CategoryDto(...$request->validated());
+        $category = $service->updateCategory($id, $dto);
+
+        return response()->json([
+            'category' => new CategoryResource($category),
+        ], Response::HTTP_OK);
+    }
+
+    public function deleteCategories(int $id, AdminService $service): JsonResponse
+    {
+        $service->deleteCategory($id);
+
+        return response()->json([
+            'message' => 'Category deleted successfully.',
+        ], Response::HTTP_OK);
     }
 }

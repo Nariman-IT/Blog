@@ -1,5 +1,6 @@
 <?php
 
+use App\Blog\Providers\BlogServiceProvider;
 use App\User\Providers\UserServiceProvider;
 use App\Auth\Providers\AuthServiceProvider;
 use App\Admin\Providers\AdminServiceProvider;
@@ -10,4 +11,5 @@ return [
     AuthServiceProvider::class,
     AdminServiceProvider::class,
     PostServiceProvider::class,
+    BlogServiceProvider::class,
 ];

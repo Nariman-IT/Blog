@@ -2,9 +2,12 @@
 
 namespace App\Admin\Repositories;
 
+use App\Admin\DTO\CategoryDto;
+use App\Admin\Models\Category;
 use App\User\Models\User;
 use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Collection;
+use PhpParser\Node\Stmt\Function_;
 
 class AdminRepository
 {
@@ -35,4 +38,15 @@ class AdminRepository
         return User::where('name', $name)->get();
     }
 
+    public function create(CategoryDto $dto): Category
+    {
+        return Category::create([
+            'category' => $dto->category,
+        ]);
+    }
+
+    public function getCategory(int $id): ?Category
+    {
+        return Category::where('id', $id)->first();
+    }
 }

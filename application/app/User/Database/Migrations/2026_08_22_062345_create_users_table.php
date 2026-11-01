@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['user', 'author', 'admin'])->default('user');
             $table->enum('status', ['active', 'banned'])->default('active');
+            $table->timestamp('author_assigned_at')->nullable();
             $table->timestamps();
         });
     }

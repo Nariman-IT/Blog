@@ -15,13 +15,11 @@ class PostController
 {
     public function index(Request $request): JsonResponse
     {
-        // добавить количество коментариев
         $posts = $request->user()->posts()->latest('id')->cursorPaginate(10);
         
         return response()->json([
             'posts' => new PostCollection($posts),
         ], Response::HTTP_OK);
-      
     }
 
     public function store(PostRequest $request, PostService $service): JsonResponse

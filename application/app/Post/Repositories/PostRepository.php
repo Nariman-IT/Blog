@@ -16,7 +16,7 @@ class PostRepository
                 'title' => $dto->title,
                 'excerpt' => $dto->excerpt,
                 'body' => $dto->body,
-                'categories' => $dto->categories,
+                'category_id' => $dto->categories,
             ]
         );
     }

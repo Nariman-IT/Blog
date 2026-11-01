@@ -2,11 +2,10 @@
 
 namespace App\Admin\Resources;
 
-use App\User\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class UserCollection extends ResourceCollection
+class AuthorsCollection extends ResourceCollection
 {
     public $collects = UserResource::class;
 

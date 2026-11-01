@@ -2,10 +2,13 @@
 
 namespace App\Admin\Services;
 
+use App\Admin\DTO\CategoryDto;
 use App\Admin\DTO\RoleDto;
 use App\Admin\DTO\SearchDto;
 use App\Admin\DTO\StatusDto;
 use App\Admin\Exceptions\AdminForbiddenException;
+use App\Admin\Exceptions\CategoryNotFoundException;
+use App\Admin\Models\Category;
 use App\Admin\Repositories\AdminRepository;
 use App\User\Enums\UserRole;
 use App\User\Exceptions\UserNotFoundException;
@@ -47,6 +50,7 @@ class AdminService
         }
 
         $user->role = $dto->role;
+        $user->author_assigned_at = now();
         $user->save();
 
         return $user;
@@ -107,5 +111,38 @@ class AdminService
         }
     }
 
-   
+    public function createCategory(CategoryDto $dto): Category
+    {
+        return $this->repository->create($dto);
+    }
+
+    public function updateCategory(int $id, CategoryDto $dto): Category
+    {
+        $category = $this->repository->getCategory($id);
+
+        if (!$category) {
+            throw new CategoryNotFoundException();
+        }
+        
+        $category->category = $dto->category;
+        $category->save();
+
+        return $category;
+    }
+
+    public function deleteCategory(int $id): void
+    {
+        $category = $this->repository->getCategory($id);
+
+        if (!$category) {
+            throw new CategoryNotFoundException();
+        }
+
+        $category->delete();
+    }
+
+    public function getAuthors(): CursorPaginator
+    {
+        return User::where('role', 'author')->cursorPaginate(10);
+    }
 }

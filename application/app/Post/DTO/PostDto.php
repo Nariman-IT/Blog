@@ -8,6 +8,6 @@ final readonly class PostDto
         public string $title,
         public string $excerpt,
         public string $body,
-        public string $categories,
+        public int $categories,
     ) {}
 }

@@ -10,5 +10,9 @@ Route::prefix('api/v1/admin')->middleware(['auth:sanctum', 'admin'])->group(func
     Route::post('/{id}/roles', [AdminController::class, 'roles']);
     Route::patch('/{id}/status', [AdminController::class, 'status']);
     Route::delete('/{id}/delete', [AdminController::class, 'delete']);
-    Route::post('search', [AdminController::class, 'search']);
+    Route::post('/search', [AdminController::class, 'search']);
+    Route::get('/authors', [AdminController::class, 'authors']);
+    Route::post('/create', [AdminController::class, 'create']);
+    Route::patch('{id}/update', [AdminController::class, 'update']);
+    Route::delete('{id}/delete/categories', [AdminController::class, 'deleteCategories']);
 });
