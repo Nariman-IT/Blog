@@ -8,9 +8,12 @@ use App\User\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
+    use HasFactory;
+
     protected $table = 'posts';
     
     protected $fillable = [
@@ -20,6 +23,8 @@ class Post extends Model
         'body',
         'category_id',
     ];
+
+    protected static $factory = \App\Post\Database\Factories\PostFactory::class;
 
     public function comments(): HasMany
     {

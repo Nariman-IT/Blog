@@ -9,10 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
+    use HasApiTokens, HasFactory;
 
     protected $fillable = [
         'name',
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'role',
         'author_assigned_at',
     ];
+
+    protected static $factory = \App\User\Database\Factories\UserFactory::class;
 
     /**
      * Мутатор пароля: автоматически хеширует значение при установке.
